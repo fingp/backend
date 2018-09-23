@@ -83,6 +83,12 @@ def get_assignment(req):
                                 temp_str2 += '\n' + 'no_files'
                             online_list.append(temp_str2)
                             temp_str2 = class_name + '\n'
+
+    def check_time(str_):
+        if str_ == "기간없음":
+            return [0, 0]
+        else:
+            return str_.split(' - ')
     res = []
     for work in result_list:
         temp = [x for x in work.split('\n') if x]
@@ -90,12 +96,14 @@ def get_assignment(req):
             temp.append(1)
         else:
             temp.append(0)
+        create_time, finish_time = check_time(temp[2].split("기간:")[1])
         temp_dict = {
             "workType": "0",
             "workCode": temp[4],
             "workCourse": temp[0],
             "workTitle": temp[1],
-            "workTime": temp[2],
+            "workCreateTime": create_time,
+            "workFinishTime": finish_time,
             "isSubmit": temp[5],
             "workFile": "[*]no_file"
         }
@@ -103,17 +111,20 @@ def get_assignment(req):
     for online in online_list:
         temp = [x for x in online.split('\n') if x]
         if len(temp) == 7:
+            create_time, finish_time = check_time(temp[2].split("기간:")[1])
             temp_dict = {
                 "workType": "2",  # 2강의자료
                 "workCode": temp[5],
                 "workCourse": temp[0],
                 "workTitle": temp[1],
-                "workTime": temp[2],
+                "workCreateTime": create_time,
+                "workFinishTime": finish_time,
                 "isSubmit": "1",  # 강의자료는 다 제출
                 "workFile": temp[4].split(')')[1] + "[*]" + temp[6]
             }
             res.append(temp_dict)
         elif len(temp) == 13:
+            create_time, finish_time = check_time(temp[2].split("기간:")[1])
             ing_time = temp[5].split(':')[1].split('/')[0]
             watch_time = 0
             if "분" in ing_time:
@@ -130,7 +141,8 @@ def get_assignment(req):
                 "workCode": temp[11],
                 "workCourse": temp[0],
                 "workTitle": temp[1],
-                "workTime": temp[2],
+                "workCreateTime": create_time,
+                "workFinishTime": finish_time,
                 "isSubmit": flag,  # 강의자료는 다 제출
                 "workFile": temp[10].split(')')[1] + "[*]" + temp[12]
             }
