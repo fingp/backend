@@ -3,6 +3,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads as json_loads
 from . import paser
+from . import models
 
 # Create your views here.
 @csrf_exempt#인증문제 해결
