@@ -5,35 +5,26 @@ import platform
 import numpy as np
 import time
 def login(req):
+    LOGIN_INFO = {
+        'USER_ID': req['id'],
+        'PASSWORD': req['pw']
+    }
     start_time = time.time()
-    file_path = './apiserver/datas/'
-    file_name = file_path + 'chromedriver_' + platform.system().lower()
-    options = webdriver.ChromeOptions()
-    options.add_argument('headless')
-    options.add_argument('window-size=1920x1080')
-    options.add_argument("disable-gpu")
-
-    chrome_driver = webdriver.Chrome(file_name, chrome_options=options)
-    chrome_driver.implicitly_wait(3)
-
-    chrome_driver.get('https://klas.khu.ac.kr/main/viewMainIndex.do')
-    chrome_driver.find_element_by_name("USER_ID").send_keys(req['id'])
-    chrome_driver.find_element_by_name('PASSWORD').send_keys(req['pw'])
-    chrome_driver.find_element_by_xpath('/html/body/div[2]/div[2]/div[1]/form/div[1]/div[2]/a/img').click()
-    html = chrome_driver.page_source
-    soup = BeautifulSoup(html, 'html.parser')
-    def login_sucess():
-        login_status = []
-        login_status.extend(soup.select('#ui-dialog-title-MESSAGE_BOX'))
-        login_status.extend(soup.select('#a'))
-        if len(login_status) > 0:
-            if soup.select('#ui-dialog-title-MESSAGE_BOX')[0].text == '로그인 에러':
-                return 0
-        else:
-            return 1
-    chrome_driver.quit()
-    res={ "flag": login_sucess()}
+    with requests.Session() as s:
+        login_req = s.post('https://klas.khu.ac.kr/user/loginUser.do', data=LOGIN_INFO)
+        # 어떤 결과가 나올까요? (200이면 성공!)
+        print(login_req.status_code)
+        if login_req.status_code != 200:
+            #raise Exception('페이지 로딩 실패' + str(login_req.status_code))
+            flag = 0;
+        else :
+            if len(s.cookies) == 1:
+                #raise Exception('로그인 실패')
+                flag = 0;
+            else:
+                flag=1;
     print("--- %s seconds ---" % (time.time() - start_time))
+    res = {"flag": flag}
     return res
 
 def get_assignment(req):

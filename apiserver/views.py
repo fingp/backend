@@ -36,7 +36,7 @@ def login(request):
     # TODO request.id , request.password 같은 식으로 로그인 처리
     if request.method=='POST':
         req=json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCESS'}]
+        data = [{'STATUS': 'SUCCESS'}]
         res=paser.login(req)
         data.append(res)
         return JsonResponse(data, safe=False)
@@ -49,7 +49,7 @@ def get_assignment(request):
     # 학번 비밀번호 받아서 과제/싸강 긁어오기
     if request.method=='POST':
         req=json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCESS'}]
+        data = [{'STATUS': 'SUCCESS'}]
         res=paser.get_assignment(req)
         data.append(res)
         return JsonResponse(data, safe=False)
