@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 import numpy as np
-import time
 from . import models
 
 def login(req):
@@ -9,7 +8,6 @@ def login(req):
         'USER_ID': req['id'],
         'PASSWORD': req['pw']
     }
-    start_time = time.time()
     with requests.Session() as s:
         login_req = s.post('https://klas.khu.ac.kr/user/loginUser.do', data=LOGIN_INFO)
         # 어떤 결과가 나올까요? (200이면 성공!)
@@ -36,8 +34,6 @@ def login(req):
                     user = models.UserTb( klas_id=LOGIN_INFO['USER_ID'], class_2018_2=class_list)
                     user.save()
                 flag=1;
-
-    print("--- %s seconds ---" % (time.time() - start_time))
     res = {"flag": flag}
     return res
 '''
@@ -63,7 +59,6 @@ def get_classlist(req):
                 class_list.append(row.find_all('td')[1].text.strip().split('[')[1].split(']')[0])
 '''
 def get_assignment(req):
-    start_time = time.time()
     user_set = models.UserTb.objects.get(klas_id=req['id'])
     class_list=str(user_set.class_2018_2).split(',')
     class_list.pop()
@@ -82,7 +77,6 @@ def get_assignment(req):
             raise Exception('홈페이지 오류')
         result_list = []
         online_list = []
-        start_time = time.time()
         for i in class_link:
             req = s.get(i)
             html = req.text
@@ -176,5 +170,4 @@ def get_assignment(req):
             res.append(temp_dict)
         else:
             print('ERROR')
-    print("--- %s seconds ---" % (time.time() - start_time))
     return res
