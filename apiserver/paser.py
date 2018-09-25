@@ -17,13 +17,13 @@ def login(req):
         if login_req.status_code != 200:
             #raise Exception('페이지 로딩 실패' + str(login_req.status_code))
             flag = 0;
-        else :
+        else : # 로그인 성공문
             if len(s.cookies) == 1:
                 #raise Exception('로그인 실패')
                 flag = 0;
             else:
-                user_set = models.UserTb.objects.filter(klas_id=req['id'])
-                if not user_set.exists():
+                user_set = models.UserTb.objects.get(klas_id=req['id'])
+                if not user_set: #존재하지 않을시
                     req = s.get('https://klas.khu.ac.kr/classroom/viewClassroomCourseMoreList.do?courseType=ing')
                     html = req.text
                     soup = BeautifulSoup(html, 'html.parser')
@@ -64,8 +64,9 @@ def get_classlist(req):
 '''
 def get_assignment(req):
     start_time = time.time()
-    class_list = ['SWCON22100','CSE33200','AMTH100112','SWCON30200',
-                  'CSE43700','CSE40609','CSE20302']#내 수강리스트 테스트용
+    user_set = models.UserTb.objects.get(klas_id=req['id'])
+    class_list=str(user_set.class_2018_2).split(',')
+    class_list.pop()
     temp = np.char.array('https://klas.khu.ac.kr/course/viewCourseClassroom.do?COURSE_ID=2018_20_')
     class_arr = np.array(class_list)
     class_link = temp + class_arr
