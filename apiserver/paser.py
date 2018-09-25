@@ -90,6 +90,11 @@ def get_assignment(req):
                         temp_str += temp.text.strip()
                         if (temp.select('div')[0].has_attr('id')):
                             temp_str += '\n' + temp.select('div')[0]['id']
+                            if (temp.select('div')[0].find('a')):
+                                temp_str += '\n' + 'https://klas.khu.ac.kr' + \
+                                            temp.select('div')[0].find('a').attrs['href'].split("..")[1]
+                            else:
+                                temp_str += '\n' + 'no_files'
                             result_list.append(temp_str)
                             temp_str = class_name + '\n'
                 elif th.find('div', attrs={'class': 'mycl_cont_top'}).text.strip() == "강의자료":
@@ -114,8 +119,10 @@ def get_assignment(req):
         temp = [x for x in work.split('\n') if x]
         if "제출 완료" in temp[3]:
             temp.append(1)
+            file_name2 = temp[3].split("료")[1]
         else:
             temp.append(0)
+            file_name2 = temp[3].split("출")[1]
         create_time, finish_time = check_time(temp[2].split("기간:")[1])
         temp_dict = {
             "workType": "0",
@@ -124,8 +131,8 @@ def get_assignment(req):
             "workTitle": temp[1],
             "workCreateTime": create_time,
             "workFinishTime": finish_time,
-            "isSubmit": temp[5],
-            "workFile": "[*]no_file"
+            "isSubmit": temp[6],
+            "workFile": file_name2 + "[*]" + temp[5]
         }
         res.append(temp_dict)
     for online in online_list:
