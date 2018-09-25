@@ -98,8 +98,7 @@ def get_assignment(req):
                         if (temp.select('div')[0].has_attr('id')):
                             temp_str2 += '\n' + temp.select('div')[0]['id']
                             if (temp.select('div')[0].find('a')):
-                                temp_str2 += '\n' + 'https://klas.khu.ac.kr' + temp.select('div')[0].find('a').attrs[
-                                    'href']
+                                temp_str2 += '\n' + 'https://klas.khu.ac.kr' + temp.select('div')[0].find('a').attrs['href'].split("..")[1]
                             else:
                                 temp_str2 += '\n' + 'no_files'
                             online_list.append(temp_str2)
