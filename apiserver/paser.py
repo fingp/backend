@@ -112,7 +112,7 @@ def get_assignment(req):
     res = []
     for work in result_list:
         temp = [x for x in work.split('\n') if x]
-        if temp[3] == "제출 완료":
+        if "제출 완료" in temp[3]:
             temp.append(1)
         else:
             temp.append(0)
