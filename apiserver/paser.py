@@ -20,8 +20,8 @@ def login(req):
                 #raise Exception('로그인 실패')
                 flag = 0;
             else:
-                user_set = models.UserTb.objects.get(klas_id=req['id'])
-                if not user_set: #존재하지 않을시
+                user_set = models.UserTb.objects.filter(klas_id=req['id'])
+                if not user_set.exists(): #존재하지 않을시
                     req = s.get('https://klas.khu.ac.kr/classroom/viewClassroomCourseMoreList.do?courseType=ing')
                     html = req.text
                     soup = BeautifulSoup(html, 'html.parser')
