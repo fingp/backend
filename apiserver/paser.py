@@ -129,8 +129,8 @@ def get_assignment(req):
             "workCode": temp[4],
             "workCourse": temp[0],
             "workTitle": temp[1],
-            "workCreateTime": create_time,
-            "workFinishTime": finish_time,
+            "workCreateTime": str(create_time).replace('.','-'),
+            "workFinishTime": str(finish_time).replace('.','-'),
             "isSubmit": temp[6],
             "workFile": file_name2 + "[*]" + temp[5]
         }
@@ -144,8 +144,8 @@ def get_assignment(req):
                 "workCode": temp[5],
                 "workCourse": temp[0],
                 "workTitle": temp[1],
-                "workCreateTime": create_time,
-                "workFinishTime": finish_time,
+                "workCreateTime": str(create_time).replace('.','-'),
+                "workFinishTime": str(finish_time).replace('.','-'),
                 "isSubmit": "1",  # 강의자료는 다 제출
                 "workFile": temp[4].split(')')[1] + "[*]" + temp[6]
             }
@@ -168,8 +168,8 @@ def get_assignment(req):
                 "workCode": temp[11],
                 "workCourse": temp[0],
                 "workTitle": temp[1],
-                "workCreateTime": create_time,
-                "workFinishTime": finish_time,
+                "workCreateTime": str(create_time).replace('.','-'),
+                "workFinishTime": str(finish_time).replace('.','-'),
                 "isSubmit": flag,  # 강의자료는 다 제출
                 "workFile": temp[10].split(')')[1] + "[*]" + temp[12]
             }
