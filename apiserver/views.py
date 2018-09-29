@@ -4,6 +4,7 @@ from django.views.decorators.csrf import csrf_exempt
 from json import loads as json_loads
 from . import paser
 from . import models
+from . import posts
 
 # Create your views here.
 @csrf_exempt#인증문제 해결
@@ -18,18 +19,6 @@ def post_list(request):
         }
     ]
     #data.append(pt())
-    return JsonResponse(data, safe=False)
-
-@csrf_exempt#인증문제 해결
-def board(request):
-    data = [
-        {
-            'subject': 'BigDataProgramming',
-            'author': 'JinHo',
-            'date': '2018.09.19 17:52',
-            'content': 'Big Data num mo jae mi it Da!'
-        }
-    ]
     return JsonResponse(data, safe=False)
 
 @csrf_exempt#인증문제 해결
@@ -56,4 +45,38 @@ def get_assignment(request):
         return JsonResponse(data, safe=False)
     else:
         data = [{'STATUS': 'GET_ASS_ERROR'}]
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt#인증문제 해결
+def board(request):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        data = [{'STATUS': 'SUCCESS'}]
+        res = posts.board_list(req)
+        data.append(res)
+        return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'BoardList_ERROR'}]
+        return JsonResponse(data, safe=False)
+@csrf_exempt#인증문제 해결
+def get_postlist(request):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        data = [{'STATUS': 'SUCCESS'}]
+        res = posts.get_postlist(req)
+        data.append(res)
+        return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'BoardList_ERROR'}]
+        return JsonResponse(data, safe=False)
+@csrf_exempt#인증문제 해결
+def get_postdetail(request,pk):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        data = [{'STATUS': 'SUCCESS'}]
+        res = posts.get_postdetail(req)
+        data.append(res)
+        return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'BoardList_ERROR'}]
         return JsonResponse(data, safe=False)

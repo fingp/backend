@@ -36,28 +36,7 @@ def login(req):
                 flag=1;
     res = {"flag": flag}
     return res
-'''
-def get_classlist(req):
-    LOGIN_INFO = {
-        'USER_ID': req['id'],
-        'PASSWORD': req['pw']
-    }
-    with requests.Session() as s:
-        login_req = s.post('https://klas.khu.ac.kr/user/loginUser.do', data=LOGIN_INFO)
-        # 어떤 결과가 나올까요? (200이면 성공!)
-        print(login_req.status_code)
-        if login_req.status_code != 200:
-            raise Exception('홈페이지 오류')
-        req = s.get('https://klas.khu.ac.kr/classroom/viewClassroomCourseMoreList.do?courseType=ing')
-        html = req.text
-        soup = BeautifulSoup(html, 'html.parser')
-        class_list = []
-        table_body = soup.find('tbody')
-        rows = table_body.find_all('tr')
-        if rows[0].text.strip() != "데이터가 존재하지 않습니다.":
-            for row in rows:
-                class_list.append(row.find_all('td')[1].text.strip().split('[')[1].split(']')[0])
-'''
+
 def get_assignment(req):
     user_set = models.UserTb.objects.get(klas_id=req['id'])
     class_list=str(user_set.class_2018_2).split(',')

@@ -49,7 +49,8 @@ class PostTb(models.Model):
     content = models.TextField(blank=True, null=True)
     create_date = models.DateTimeField(blank=True, null=True)
     hit = models.PositiveIntegerField()
-
+    def __unicode__(self):
+        return self.title
     class Meta:
         managed = False
         db_table = 'post_tb'
