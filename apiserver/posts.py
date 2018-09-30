@@ -63,6 +63,13 @@ def comment_add(form,pk):
                          content=form.data['content'])
     obj.save()
 
+def post_add(form):
+    obj=models.PostTb(class_code=form.data['class_code'],
+                         author_id=form.data['author_id'],
+                         title=form.data['title'],
+                         content=form.data['content'],
+                         hit=0)
+    obj.save()
 
 
 

@@ -88,5 +88,20 @@ def comment_add(request, pk):
             data = [{'STATUS': 'FORM ERROR'}]
             return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'COMMENT_NEW ERROR'}]
+        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def post_add(request):
+    if request.method == 'POST':
+        form=forms.PostForm(request.POST)
+        if form.is_valid():
+            posts.post_add(form)
+            data = [{'STATUS': 'SUCCESS'}]
+            return JsonResponse(data, safe=False)
+        else:
+            data = [{'STATUS': 'FORM ERROR'}]
+            return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'ADD_POST ERROR'}]
         return JsonResponse(data, safe=False)

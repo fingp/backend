@@ -50,6 +50,16 @@ class CommentTb(models.Model):
     class Meta:
         managed = False
         db_table = 'comment_tb'
+
+class UserTb(models.Model):
+    klas_id = models.CharField(primary_key=True, max_length=20)
+    naver_id = models.CharField(max_length=40, blank=True, null=True)
+    class_2018_2 = models.CharField(max_length=400, blank=True, null=True)
+
+    class Meta:
+        managed = False
+        db_table = 'user_tb'
+
 class Test(models.Model):
     sno = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=10, blank=True, null=True)
@@ -62,11 +72,3 @@ class Test(models.Model):
         db_table = 'test'
 
 
-class UserTb(models.Model):
-    klas_id = models.CharField(primary_key=True, max_length=20)
-    naver_id = models.CharField(max_length=40, blank=True, null=True)
-    class_2018_2 = models.CharField(max_length=400, blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'user_tb'
