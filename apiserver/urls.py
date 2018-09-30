@@ -12,5 +12,7 @@ urlpatterns = [
     url('post_list', views.get_postlist),
     url('post_list/', views.get_postlist),
     url('post_detail/(?P<pk>\d+)$', views.get_postdetail),
-    url('post_detail/(?P<pk>\d+)/$', views.get_postdetail)
+    url('post_detail/(?P<pk>\d+)/$', views.get_postdetail),
+    url('post_detail/(?P<pk>\d+)/comment/add$', views.comment_add),
+    url('post_detail/(?P<pk>\d+)/comment/add/$', views.comment_add)
 ]

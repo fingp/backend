@@ -7,22 +7,6 @@
 # Feel free to rename the models, but don't rename db_table values or field names.
 from django.db import models
 
-
-
-
-class CommentTb(models.Model):
-    comment_id = models.CharField(primary_key=True, max_length=20)
-    class_code = models.CharField(max_length=20)
-    post_id = models.PositiveIntegerField(blank=True, null=True)
-    create_date = models.DateTimeField(blank=True, null=True)
-    author_id = models.CharField(max_length=20)
-    content = models.TextField(blank=True, null=True)
-
-    class Meta:
-        managed = False
-        db_table = 'comment_tb'
-
-
 class CourseTb(models.Model):
     class_code = models.CharField(primary_key=True, max_length=20)
     class_name = models.CharField(max_length=100)
@@ -47,7 +31,7 @@ class PostTb(models.Model):
     author_id = models.CharField(max_length=20)
     title = models.CharField(max_length=255)
     content = models.TextField(blank=True, null=True)
-    create_date = models.DateTimeField(blank=True, null=True)
+    create_date = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     hit = models.PositiveIntegerField()
     def __unicode__(self):
         return self.title
@@ -55,7 +39,17 @@ class PostTb(models.Model):
         managed = False
         db_table = 'post_tb'
 
+class CommentTb(models.Model):
+    comment_id = models.AutoField(primary_key=True)
+    class_code = models.CharField(max_length=20)
+    post_id = models.PositiveIntegerField(blank=True, null=True)
+    create_date = models.DateTimeField(blank=True, null=True,auto_now_add=True)
+    author_id = models.CharField(max_length=20)
+    content = models.TextField(blank=True, null=True)
 
+    class Meta:
+        managed = False
+        db_table = 'comment_tb'
 class Test(models.Model):
     sno = models.IntegerField(primary_key=True)
     name = models.CharField(max_length=10, blank=True, null=True)

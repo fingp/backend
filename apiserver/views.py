@@ -5,7 +5,7 @@ from json import loads as json_loads
 from . import paser
 from . import models
 from . import posts
-
+from . import forms
 # Create your views here.
 @csrf_exempt#인증문제 해결
 def post_list(request):
@@ -71,12 +71,22 @@ def get_postlist(request):
         return JsonResponse(data, safe=False)
 @csrf_exempt#인증문제 해결
 def get_postdetail(request,pk):
+    data = [{'STATUS': 'SUCCESS'}]
+    res = posts.get_postdetail(pk)
+    data.append(res)
+    return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def comment_add(request, pk):
     if request.method == 'POST':
-        req = json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCCESS'}]
-        res = posts.get_postdetail(req)
-        data.append(res)
-        return JsonResponse(data, safe=False)
+        form=forms.CommentForm(request.POST)
+        if form.is_valid():
+            posts.comment_add(form,pk)
+            data = [{'STATUS': 'SUCCESS'}]
+            return JsonResponse(data, safe=False)
+        else:
+            data = [{'STATUS': 'FORM ERROR'}]
+            return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'BoardList_ERROR'}]
+        data = [{'STATUS': 'COMMENT_NEW ERROR'}]
         return JsonResponse(data, safe=False)

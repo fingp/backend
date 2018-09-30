@@ -4,4 +4,4 @@ from .models import CommentTb
 class CommentForm(forms.ModelForm):
     class Meta :
         model = CommentTb
-        fields = '__all__'
+        fields = ('class_code','author_id','content')
