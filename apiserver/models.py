@@ -33,6 +33,7 @@ class PostTb(models.Model):
     content = models.TextField(blank=True, null=True)
     create_date = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     hit = models.PositiveIntegerField()
+    flag = models.IntegerField(blank=True, null=True,default=1)
     def __unicode__(self):
         return self.title
     class Meta:
@@ -46,6 +47,7 @@ class CommentTb(models.Model):
     create_date = models.DateTimeField(blank=True, null=True,auto_now_add=True)
     author_id = models.CharField(max_length=20)
     content = models.TextField(blank=True, null=True)
+    flag = models.IntegerField(blank=True, null=True, default=1)
 
     class Meta:
         managed = False

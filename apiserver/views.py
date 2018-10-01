@@ -1,9 +1,9 @@
-from django.shortcuts import render
+#from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads as json_loads
 from . import paser
-from . import models
+#from . import models
 from . import posts
 from . import forms
 # Create your views here.
@@ -64,21 +64,6 @@ def get_postdetail(request,pk):
     return JsonResponse(data, safe=False)
 
 @csrf_exempt
-def comment_add(request, pk):
-    if request.method == 'POST':
-        form=forms.CommentForm(request.POST)
-        if form.is_valid():
-            posts.comment_add(form,pk)
-            data = [{'STATUS': 'SUCCESS'}]
-            return JsonResponse(data, safe=False)
-        else:
-            data = [{'STATUS': 'FORM ERROR'}]
-            return JsonResponse(data, safe=False)
-    else:
-        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
-        return JsonResponse(data, safe=False)
-
-@csrf_exempt
 def post_add(request):
     if request.method == 'POST':
         form=forms.PostForm(request.POST)
@@ -98,8 +83,7 @@ def post_update(request,pk):
     if request.method == 'POST':
         form = forms.PostForm(request.POST)
         if form.is_valid():
-            posts.post_update(form,pk)
-            data = [{'STATUS': 'SUCCESS'}]
+            data=  posts.post_update(form,pk)
             return JsonResponse(data, safe=False)
         else:
             data = [{'STATUS': 'UPDATE_FORM ERROR'}]
@@ -115,6 +99,44 @@ def post_delete(request,pk):
         data = posts.post_delete(req,pk)
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'UPDATE_POST ERROR'}]
+        data = [{'STATUS': 'DELETE_POST ERROR'}]
         return JsonResponse(data, safe=False)
 
+@csrf_exempt
+def comment_add(request, pk):
+    if request.method == 'POST':
+        form=forms.CommentForm(request.POST)
+        if form.is_valid():
+            posts.comment_add(form,pk)
+            data = [{'STATUS': 'SUCCESS'}]
+            return JsonResponse(data, safe=False)
+        else:
+            data = [{'STATUS': 'FORM ERROR'}]
+            return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def comment_update(request,pk,pk2):
+    if request.method == 'POST':
+        form=forms.CommentForm(request.POST)
+        if form.is_valid():
+            data= posts.comment_update(form,pk2)
+            return JsonResponse(data, safe=False)
+        else:
+            data = [{'STATUS': 'FORM ERROR'}]
+            return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt#인증문제 해결
+def comment_delete(request,pk,pk2):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        data = posts.comment_delete(req,pk2)
+        return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'UPDATE_POST ERROR'}]
+        return JsonResponse(data, safe=False)

@@ -20,5 +20,9 @@ urlpatterns = [
     url('post_detail/(?P<pk>\d+)/post/delete$', views.post_delete),
     url('post_detail/(?P<pk>\d+)/post/delete/$', views.post_delete),
     url('post_detail/(?P<pk>\d+)/comment/add$', views.comment_add),
-    url('post_detail/(?P<pk>\d+)/comment/add/$', views.comment_add)
+    url('post_detail/(?P<pk>\d+)/comment/add/$', views.comment_add),
+    url('post_detail/(?P<pk>\d+)/comment/update/(?P<pk2>\d+)$', views.comment_update),
+    url('post_detail/(?P<pk>\d+)/comment/update/(?P<pk2>\d+)/$', views.comment_update),
+    url('post_detail/(?P<pk>\d+)/comment/delete/(?P<pk2>\d+)$', views.comment_delete),
+    url('post_detail/(?P<pk>\d+)/comment/delete/(?P<pk2>\d+)/$', views.comment_delete)
 ]
