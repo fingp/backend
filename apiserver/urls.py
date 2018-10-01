@@ -2,7 +2,7 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url(r'^$', views.post_list),
+    url(r'^$', views.get_postlist),
     url('board/', views.board),
     url('board', views.board),
     url('login/', views.login),
@@ -17,6 +17,8 @@ urlpatterns = [
     url('post_detail/(?P<pk>\d+)/$', views.get_postdetail),
     url('post_detail/(?P<pk>\d+)/post/update$', views.post_update),
     url('post_detail/(?P<pk>\d+)/post/update/$', views.post_update),
+    url('post_detail/(?P<pk>\d+)/post/delete$', views.post_delete),
+    url('post_detail/(?P<pk>\d+)/post/delete/$', views.post_delete),
     url('post_detail/(?P<pk>\d+)/comment/add$', views.comment_add),
     url('post_detail/(?P<pk>\d+)/comment/add/$', views.comment_add)
 ]

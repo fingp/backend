@@ -78,4 +78,13 @@ def post_update(form,pk):
     post.content=form.data['content']
     post.save()
 
-
+def post_delete(req,pk):
+    try :
+        post = models.PostTb.objects.get(post_id=pk)
+        if post.author_id==req['id']:
+            post.delete()
+            return [{'STATUS': 'SUCCESS'}]
+        else :
+            return [{'STATUS': 'ACCESS FAIL'}]
+    except models.PostTb.DoesNotExist:
+        return [{'STATUS': 'NONE DATA'}]

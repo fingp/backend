@@ -7,19 +7,6 @@ from . import models
 from . import posts
 from . import forms
 # Create your views here.
-@csrf_exempt#인증문제 해결
-def post_list(request):
-    data = [
-        {
-            'id': 2014104154,
-            'title': 'Operating System',
-            'content': 'Practice_01',
-            'duedate': '2018.09.19 08:00 - 2018.12.31 23:50',
-            'submit': 'N'
-        }
-    ]
-    #data.append(pt())
-    return JsonResponse(data, safe=False)
 
 @csrf_exempt#인증문제 해결
 def login(request):
@@ -120,3 +107,14 @@ def post_update(request,pk):
     else:
         data = [{'STATUS': 'UPDATE_POST ERROR'}]
         return JsonResponse(data, safe=False)
+
+@csrf_exempt#인증문제 해결
+def post_delete(request,pk):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        data = posts.post_delete(req,pk)
+        return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'UPDATE_POST ERROR'}]
+        return JsonResponse(data, safe=False)
+

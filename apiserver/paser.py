@@ -15,13 +15,14 @@ def login(req):
         if login_req.status_code != 200:
             #raise Exception('페이지 로딩 실패' + str(login_req.status_code))
             flag = 0;
-        else : # 로그인 성공문
+        else :
             if len(s.cookies) == 1:
                 #raise Exception('로그인 실패')
                 flag = 0;
-            else:
-                user_set = models.UserTb.objects.filter(klas_id=req['id'])
-                if not user_set.exists(): #존재하지 않을시
+            else:# 로그인 성공문
+                try :
+                    models.UserTb.objects.get(klas_id=req['id'])
+                except models.UserTb.DoesNotExist:
                     req = s.get('https://klas.khu.ac.kr/classroom/viewClassroomCourseMoreList.do?courseType=ing')
                     html = req.text
                     soup = BeautifulSoup(html, 'html.parser')
