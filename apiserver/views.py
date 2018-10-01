@@ -100,8 +100,23 @@ def post_add(request):
             data = [{'STATUS': 'SUCCESS'}]
             return JsonResponse(data, safe=False)
         else:
-            data = [{'STATUS': 'FORM ERROR'}]
+            data = [{'STATUS': 'ADD_FORM ERROR'}]
             return JsonResponse(data, safe=False)
     else:
         data = [{'STATUS': 'ADD_POST ERROR'}]
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def post_update(request,pk):
+    if request.method == 'POST':
+        form = forms.PostForm(request.POST)
+        if form.is_valid():
+            posts.post_update(form,pk)
+            data = [{'STATUS': 'SUCCESS'}]
+            return JsonResponse(data, safe=False)
+        else:
+            data = [{'STATUS': 'UPDATE_FORM ERROR'}]
+            return JsonResponse(data, safe=False)
+    else:
+        data = [{'STATUS': 'UPDATE_POST ERROR'}]
         return JsonResponse(data, safe=False)

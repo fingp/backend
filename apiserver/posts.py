@@ -1,5 +1,4 @@
 from . import models
-
 def board_list(req):
     user_set = models.UserTb.objects.get(klas_id=req['id'])
     class_list = str(user_set.class_2018_2).split(',')
@@ -71,6 +70,12 @@ def post_add(form):
                          hit=0)
     obj.save()
 
-
+def post_update(form,pk):
+    post = models.PostTb.objects.get(post_id=pk)
+    #post.class_code=form.data['class_code']
+    #post.author_id = form.data['author_id'],
+    post.title=form.data['title']
+    post.content=form.data['content']
+    post.save()
 
 
