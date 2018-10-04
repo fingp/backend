@@ -34,34 +34,36 @@ def get_postlist(req):
 def get_postdetail(pk):
     try:
         post = models.PostTb.objects.get(post_id=pk)
-        res=[]
+
         if post.flag==0:
-            return res
-        temp_dict = {
-                    "type" : "0",#0 이면 게시글 본문
+            return {"status":"AlreadyDeletedError"}
+        post_dict = [{
+                    #0 이면 게시글 본문
                     "post_id": post.post_id,  # pk
                     "title": post.title,  # 제목
                     "content": post.content,  # 내용
                     "author_id": post.author_id,  # 작성자 id
                     "create_date": post.create_date,  # 시간
                     "hit": post.hit
-                }
-        res.append(temp_dict)
+                }]
+
         comment_sets=models.CommentTb.objects.filter(post_id=post.post_id)
         if comment_sets.exists(): # 존재할시
+            comments=[]
             for comment in comment_sets:
                 if comment.flag==1 :# 1이 노삭제
                     temp_dict={
-                        "type" : "1", #1임으로 댓글띠
+                         #1임으로 댓글띠
                         "comment_id" : comment.comment_id,
                         "content" : comment.content,
                         "create_date" : comment.create_date,
                         "author_id": comment.author_id
                     }
-                    res.append(temp_dict)
-        return res
+                    comments.append(temp_dict)
+        return {"status":"Success","post":post_dict,"comments":comments}
+
     except models.PostTb.DoesNotExist:
-        return [{'STATUS': 'NONE DATA'}]
+        return {'STATUS': 'NonPostError'}
 
 
 def post_add(form):
@@ -81,11 +83,15 @@ def post_update(form,pk):
             post.title=form.data['title']
             post.content=form.data['content']
             post.save()
-            return [{'STATUS': 'SUCCESS'}]
+            return {'status': 'Success'}
+        elif post.author_id!=form.data['author_id']:
+            return {'status': 'AccessError'}
+        elif post.flag ==0:
+            return {'status': 'AlreadyDeletedError'}
         else:
-            return [{'STATUS': 'ACCESS FAIL'}]
+            return {'status': 'Error'}
     except models.PostTb.DoesNotExist:
-        return [{'STATUS': 'NONE DATA'}]
+        return  {'status': 'NonPostError'}
 
 
 def post_delete(req,pk):
@@ -95,11 +101,15 @@ def post_delete(req,pk):
             post.flag=0
             post.save()
             #post.delete()
-            return [{'STATUS': 'SUCCESS'}]
+            return {'status': 'Success'}
+        elif post.author_id!=req['id']:
+            return {'status': 'AccessError'}
+        elif post.flag ==0:
+            return {'status': 'AlreadyDeletedError'}
         else :
-            return [{'STATUS': 'ACCESS FAIL'}]
+            return {'status': 'Error'}
     except models.PostTb.DoesNotExist:
-        return [{'STATUS': 'NONE DATA'}]
+        return {'status': 'NonPostError'}
 
 def comment_add(form,pk):
     obj=models.CommentTb(class_code=form.data['class_code'],
@@ -114,11 +124,15 @@ def comment_update(form,pk2):
         if comment.author_id == form.data['author_id'] and comment.flag == 1:
             comment.content=form.data['content']
             comment.save()
-            return [{'STATUS': 'SUCCESS'}]
+            return {'status': 'Success'}
+        elif comment.author_id != form.data['author_id']:
+            return {'status': 'AccessError'}
+        elif comment.flag == 0:
+            return {'status': 'AlreadyDeletedError'}
         else:
-            return [{'STATUS': 'ACCESS FAIL'}]
+            return {'status': 'Error'}
     except models.CommentTb.DoesNotExist:
-        return [{'STATUS': 'NONE DATA'}]
+        return {'status': 'NonCommentError'}
 
 def comment_delete(req,pk2):
     try:
@@ -126,8 +140,12 @@ def comment_delete(req,pk2):
         if comment.author_id == req['id'] and comment.flag == 1:
             comment.flag=0
             comment.save()
-            return [{'STATUS': 'SUCCESS'}]
+            return {'status': 'Success'}
+        elif comment.author_id != req['id']:
+            return {'status': 'AccessError'}
+        elif comment.flag == 0:
+            return {'status': 'AlreadyDeletedError'}
         else:
-            return [{'STATUS': 'ACCESS FAIL'}]
+            return [{'status': 'Error'}]
     except models.CommentTb.DoesNotExist:
-        return [{'STATUS': 'NONE DATA'}]
+        return {'status': 'NonCommentError'}

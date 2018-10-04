@@ -13,12 +13,12 @@ def login(request):
     # TODO request.id , request.password 같은 식으로 로그인 처리
     if request.method=='POST':
         req=json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCCESS'}]
+        data = {}
         res=paser.login(req)
-        data.append(res)
+        data=res
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'LOGIN_ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt
@@ -38,29 +38,27 @@ def get_assignment(request):
 def board(request):
     if request.method == 'POST':
         req = json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCCESS'}]
+        data = {'status': 'Success'}
         res = posts.board_list(req)
-        data.append(res)
+        data["board"]=res
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'BoardList_ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 @csrf_exempt#인증문제 해결
 def get_postlist(request):
     if request.method == 'POST':
         req = json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCCESS'}]
+        data = {'status': 'Success'}
         res = posts.get_postlist(req)
-        data.append(res)
+        data["posts"]=res
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'BoardList_ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 @csrf_exempt#인증문제 해결
 def get_postdetail(request,pk):
-    data = [{'STATUS': 'SUCCESS'}]
-    res = posts.get_postdetail(pk)
-    data.append(res)
+    data = posts.get_postdetail(pk)
     return JsonResponse(data, safe=False)
 
 @csrf_exempt
@@ -69,13 +67,13 @@ def post_add(request):
         form=forms.PostForm(request.POST)
         if form.is_valid():
             posts.post_add(form)
-            data = [{'STATUS': 'SUCCESS'}]
+            data = {'status': 'Success'}
             return JsonResponse(data, safe=False)
         else:
-            data = [{'STATUS': 'ADD_FORM ERROR'}]
+            data = {'status': 'FormError'}
             return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'ADD_POST ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt
@@ -86,10 +84,10 @@ def post_update(request,pk):
             data=  posts.post_update(form,pk)
             return JsonResponse(data, safe=False)
         else:
-            data = [{'STATUS': 'UPDATE_FORM ERROR'}]
+            data = {'status': 'FormError'}
             return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'UPDATE_POST ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt#인증문제 해결
@@ -99,7 +97,7 @@ def post_delete(request,pk):
         data = posts.post_delete(req,pk)
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'DELETE_POST ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt
@@ -108,13 +106,13 @@ def comment_add(request, pk):
         form=forms.CommentForm(request.POST)
         if form.is_valid():
             posts.comment_add(form,pk)
-            data = [{'STATUS': 'SUCCESS'}]
+            data = {'status': 'Success'}
             return JsonResponse(data, safe=False)
         else:
-            data = [{'STATUS': 'FORM ERROR'}]
+            data = {'status': 'FormError'}
             return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt
@@ -125,10 +123,10 @@ def comment_update(request,pk,pk2):
             data= posts.comment_update(form,pk2)
             return JsonResponse(data, safe=False)
         else:
-            data = [{'STATUS': 'FORM ERROR'}]
+            data = {'status': 'FormError'}
             return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'ADD_COMMENT ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt#인증문제 해결
@@ -138,5 +136,5 @@ def comment_delete(request,pk,pk2):
         data = posts.comment_delete(req,pk2)
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'UPDATE_POST ERROR'}]
+        data = {'status': 'RequestError'}
         return JsonResponse(data, safe=False)

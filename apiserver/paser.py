@@ -9,16 +9,19 @@ def login(req):
         'PASSWORD': req['pw']
     }
     with requests.Session() as s:
+
         login_req = s.post('https://klas.khu.ac.kr/user/loginUser.do', data=LOGIN_INFO)
         # 어떤 결과가 나올까요? (200이면 성공!)
         print(login_req.status_code)
         if login_req.status_code != 200:
             #raise Exception('페이지 로딩 실패' + str(login_req.status_code))
+            status="PageError"
             flag = 0;
         else :
             if len(s.cookies) == 1:
                 #raise Exception('로그인 실패')
                 flag = 0;
+                status = "IdPwError"
             else:# 로그인 성공문
                 try :
                     models.UserTb.objects.get(klas_id=req['id'])
@@ -34,8 +37,10 @@ def login(req):
                             class_list += row.find_all('td')[1].text.strip().split('[')[1].split(']')[0] + ','
                     user = models.UserTb( klas_id=LOGIN_INFO['USER_ID'], class_2018_2=class_list)
                     user.save()
-                flag=1;
-    res = {"flag": flag}
+                finally:
+                    flag=1;
+                    status="Success"
+    res={"status":status,"flag":flag}
     return res
 
 def get_assignment(req):
