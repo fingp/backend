@@ -1,4 +1,4 @@
-#from django.shortcuts import render
+from django.shortcuts import render
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from json import loads as json_loads
@@ -7,6 +7,10 @@ from . import paser
 from . import posts
 from . import forms
 # Create your views here.
+import os
+@csrf_exempt#인증문제 해결
+def main_page(request):
+    return render(request, 'apiserver/main_page.html', {})
 
 @csrf_exempt#인증문제 해결
 def login(request):
