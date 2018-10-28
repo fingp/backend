@@ -111,7 +111,7 @@ def clova_login(req):
                                         "workCourse": temp[0],
                                         "workTitle": temp[1],
                                         "workFinishTime": finish_time,
-                                        "isSubmit": temp[6],
+
                                     }
                                 res.append(temp_dict)
 
@@ -137,7 +137,7 @@ def clova_login(req):
                                             "workCourse": temp[0],
                                             "workTitle": temp[1],
                                             "workFinishTime": finish_time,
-                                            "isSubmit": flag,  # 강의자료는 다 제출
+
                                         }
                                         res1.append(temp_dict)
                     res=sorted(res, key=lambda r: r['workFinishTime'])
