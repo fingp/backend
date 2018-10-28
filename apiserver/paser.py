@@ -3,6 +3,7 @@ from bs4 import BeautifulSoup
 import numpy as np
 from . import models
 from datetime import datetime
+import json
 def clova_login(req):
     LOGIN_INFO = {
         'USER_ID': req['id'],
@@ -159,7 +160,7 @@ def clova_ass(req):
         user_set = models.UserTb.objects.get(klas_id=req['id'])
         status = "Success"
         name = user_set.name
-        res = user_set.work
+        res = json.loads(user_set.work.replace("'",'"'))
         return {'STATUS': status, 'NAME': name, 'ASS': res}
     except models.UserTb.DoesNotExist:
         status = "UserError"
@@ -171,7 +172,7 @@ def clova_lec(req):
         user_set= models.UserTb.objects.get(klas_id=req['id'])
         status ="Success"
         name=user_set.name
-        res=user_set.lec
+        res=json.loads(user_set.lec.replace("'",'"'))
         return {'STATUS':status,'NAME':name,'LEC':res}
     except models.UserTb.DoesNotExist:
         status="UserError"
