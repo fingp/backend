@@ -17,7 +17,6 @@ def login(request):
     # TODO request.id , request.password 같은 식으로 로그인 처리
     if request.method=='POST':
         req=json_loads(request.body.decode("utf-8"))
-        data = {}
         res=paser.login(req)
         data=res
         return JsonResponse(data, safe=False)
