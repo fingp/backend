@@ -26,6 +26,40 @@ def login(request):
         return JsonResponse(data, safe=False)
 
 @csrf_exempt
+def update(request):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        res=paser.clova_login(req)
+        data=res
+        return JsonResponse(data, safe=False)
+    else:
+        data = {'status': 'RequestError'}
+        return JsonResponse(data, safe=False)
+@csrf_exempt
+def clova_ass(request):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        res=paser.clova_ass(req)
+        data=res
+        return JsonResponse(data, safe=False)
+    else:
+        data = {'status': 'RequestError'}
+        return JsonResponse(data, safe=False)
+
+@csrf_exempt
+def clova_lec(request):
+    if request.method == 'POST':
+        req = json_loads(request.body.decode("utf-8"))
+        res=paser.clova_lec(req)
+        data=res
+        return JsonResponse(data, safe=False)
+    else:
+        data = {'status': 'RequestError'}
+        return JsonResponse(data, safe=False)
+
+
+
+@csrf_exempt
 def get_assignment(request):
     # 학번 비밀번호 받아서 과제/싸강 긁어오기
     if request.method=='POST':

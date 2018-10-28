@@ -57,7 +57,9 @@ class UserTb(models.Model):
     klas_id = models.CharField(primary_key=True, max_length=20)
     naver_id = models.CharField(max_length=40, blank=True, null=True)
     class_2018_2 = models.CharField(max_length=400, blank=True, null=True)
-
+    name =models.CharField(max_length=256, blank=True, null=True)
+    lec = models.CharField(max_length=512, blank=True, null=True)
+    work = models.CharField(max_length=512, blank=True, null=True)
     class Meta:
         managed = False
         db_table = 'user_tb'

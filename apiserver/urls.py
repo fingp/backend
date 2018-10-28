@@ -24,5 +24,8 @@ urlpatterns = [
     url('post_detail/(?P<pk>\d+)/comment/update/(?P<pk2>\d+)$', views.comment_update),
     url('post_detail/(?P<pk>\d+)/comment/update/(?P<pk2>\d+)/$', views.comment_update),
     url('post_detail/(?P<pk>\d+)/comment/delete/(?P<pk2>\d+)$', views.comment_delete),
-    url('post_detail/(?P<pk>\d+)/comment/delete/(?P<pk2>\d+)/$', views.comment_delete)
+    url('post_detail/(?P<pk>\d+)/comment/delete/(?P<pk2>\d+)/$', views.comment_delete),
+    url('update/',views.update),
+    url('clovaAss',views.clova_ass),
+    url('clovaLec',views.clova_lec),
 ]
