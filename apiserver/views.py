@@ -63,12 +63,12 @@ def get_assignment(request):
     # 학번 비밀번호 받아서 과제/싸강 긁어오기
     if request.method=='POST':
         req=json_loads(request.body.decode("utf-8"))
-        data = [{'STATUS': 'SUCCESS'}]
+        data = {'status': 'SUCCESS'}
         res=paser.get_assignment(req)
-        data.append(res)
+        data["assignment"]=res
         return JsonResponse(data, safe=False)
     else:
-        data = [{'STATUS': 'GET_ASS_ERROR'}]
+        data = {'STATUS': 'GET_ASS_ERROR'}
         return JsonResponse(data, safe=False)
 
 @csrf_exempt#인증문제 해결
